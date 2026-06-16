@@ -1,0 +1,11 @@
+{
+  "name": "op_system",
+  "short_name": "op_system",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0175C2",
+  "theme_color": "#0175C2",
+  "description": "OP System.",
+  "orientation": "portrait-primary",
+  "prefer_related_applications": false
+}

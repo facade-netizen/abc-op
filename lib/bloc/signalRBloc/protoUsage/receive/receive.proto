@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+package abc;
+
+// Main model
+message ABCModel {
+  string eventId = 1;
+  string marketId = 2;
+  bool inPlay = 3;
+  repeated AbcRunner runner = 4;
+  BettingType bettingType = 5;
+  bool sportingEvent = 6;
+  string marketType = 7;
+  string marketName = 8;
+  StatusType status = 9;
+  string marketTime = 10;
+  MarketCondition marketCondition = 11;
+}
+
+// Market condition
+message MarketCondition {
+    bool betLock = 1;
+    int32 minBet = 2;
+    int32 maxBet = 3;
+    int32 maxProfit = 4;
+    int32 betDelay = 5;
+    int32 mtp = 6;
+    bool allowUnmatchBet = 7;
+    int32 potLimit = 8;
+    int32 volume = 9;
+}
+// Runner model
+
+message AbcRunner {
+  string name = 1;
+  repeated ABCPrice backs = 2;
+  repeated ABCPrice lays = 3;
+  StatusType status = 4;
+  string runnerId = 5;
+}
+
+message ABCPrice {
+  double price = 1;
+  double size = 2;
+  string line = 3; 
+}
+
+// Enums
+enum StatusType {
+  ACTIVE = 0;
+  SUSPENDED = 1;
+  INACTIVE = 2;
+  WINNER = 3;
+  LOSER = 4;
+  REMOVED_VACANT = 5;
+  REMOVED = 6;
+  CLOSED = 7;
+  OPEN = 8;
+  VOID = 9;
+  SETTLE = 10;
+  VOIDED = 11;
+  OFFLINE = 12;
+  ONLINE = 13;
+}
+
+enum BettingType {
+  ODDS = 0;
+  LINE = 1;
+  BOOKMAKER = 2;
+}

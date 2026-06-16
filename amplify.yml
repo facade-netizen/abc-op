@@ -1,0 +1,41 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        # Clone Flutter SDK
+        - if [ -d flutter ]; then rm -rf flutter; fi
+        - git clone https://github.com/flutter/flutter.git --depth 1 -b 3.38.5
+        - export PATH="$PWD/flutter/bin:$PATH"
+        - chmod -R 755 flutter
+        - flutter --version
+        - flutter doctor
+        - flutter pub get
+
+    build:
+      commands:
+        - export PATH="$PWD/flutter/bin:$PATH"
+
+        # Per-deploy unique build version (commit id on Amplify, timestamp locally).
+        - export BUILD_VERSION="${AWS_COMMIT_ID:-$(date -u +%Y%m%d%H%M%S)}"
+        - echo "Build version $BUILD_VERSION"
+
+        # Build. BUILD_VERSION is read by AppConstants.build via String.fromEnvironment.
+        - flutter build web --release --dart-define=BUILD_VERSION=$BUILD_VERSION
+
+        # Replace the placeholder in index.html so the Flutter service worker
+        # registration URL changes on every deploy. Flutter's built-in update
+        # logic detects the new version, installs the new SW, and reloads
+        # transparently - no extra cache-bust script needed.
+        - sed -i "s/__BUILD_VERSION__/$BUILD_VERSION/g" build/web/index.html
+
+  artifacts:
+    baseDirectory: build/web
+    files:
+      - '**/*'
+
+  cache:
+    paths:
+      - flutter/
+      - ~/.pub-cache
+      - .dart_tool

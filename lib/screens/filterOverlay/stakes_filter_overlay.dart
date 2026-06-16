@@ -1,0 +1,125 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_switch/flutter_switch.dart';
+
+import '../../reusable/colors.dart';
+import 'filter_overlay_button.dart';
+
+class StakesFilterOverlay extends StatefulWidget {
+  final double width;
+  final Function(Map<String, dynamic> filterValues)? onSubmitted;
+
+  const StakesFilterOverlay({super.key, required this.width, this.onSubmitted});
+
+  @override
+  State<StakesFilterOverlay> createState() => _StakesFilterOverlayState();
+}
+
+class _StakesFilterOverlayState extends State<StakesFilterOverlay> {
+  bool status = true;
+  late TextEditingController stakeController;
+
+  // Store the setBodyState function
+  late void Function(void Function()) _setBodyState;
+
+  @override
+  void initState() {
+    super.initState();
+    stakeController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    stakeController.dispose();
+    super.dispose();
+  }
+
+  void _refreshFilters() {
+    // Update both the local state and the body state
+    _setBodyState(() {
+      status = false;
+      stakeController.clear();
+    });
+
+    // Also update the widget state
+    setState(() {
+      status = false;
+      stakeController.clear();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FilterOverlay(
+      width: widget.width,
+      title: 'Stakes Filter',
+      refreshTitle: 'Clear All',
+      onRefresh: _refreshFilters,
+      onSubmitted: (filterValues) {
+        Map<String, dynamic> values = {'switchStatus': status};
+
+        values.addAll({'stake': stakeController.text});
+
+        if (widget.onSubmitted != null) {
+          widget.onSubmitted!(values);
+        }
+      },
+      body: StatefulBuilder(
+        builder: (context, setBodyState) {
+          // Store the setBodyState function for later use
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            _setBodyState = setBodyState;
+          });
+
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Switch Section
+              Container(
+                decoration: BoxDecoration(
+                  border: Border(top: BorderSide(color: Colors.grey.shade200)),
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const SizedBox(width: 100),
+                    FlutterSwitch(
+                      width: 70.0,
+                      height: 35.0,
+                      valueFontSize: 12.0,
+                      toggleSize: 20.0,
+                      value: status,
+                      borderRadius: 20.0,
+                      padding: 6.0,
+                      activeText: "ON",
+                      activeColor: green,
+                      inactiveColor: grey,
+                      inactiveText: "OFF",
+                      showOnOff: true,
+                      onToggle: (val) {
+                        setBodyState(() {
+                          status = !status;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ),
+
+              // Input Fields Section
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                decoration: BoxDecoration(
+                  border: Border(top: BorderSide(color: Colors.grey.shade200)),
+                ),
+                child: Column(
+                  children: [OverlayTFT(title: 'INR >', controller: stakeController, enabled: status)],
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}

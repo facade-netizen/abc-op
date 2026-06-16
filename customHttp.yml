@@ -1,0 +1,27 @@
+customHeaders:
+  # Never cache the entry document or anything that drives version detection.
+  - pattern: '/'
+    headers:
+      - key: 'Cache-Control'
+        value: 'no-cache, no-store, must-revalidate'
+  - pattern: '/index.html'
+    headers:
+      - key: 'Cache-Control'
+        value: 'no-cache, no-store, must-revalidate'
+      - key: 'Pragma'
+        value: 'no-cache'
+      - key: 'Expires'
+        value: '0'
+  - pattern: '/flutter_service_worker.js'
+    headers:
+      - key: 'Cache-Control'
+        value: 'no-cache, no-store, must-revalidate'
+  - pattern: '/manifest.json'
+    headers:
+      - key: 'Cache-Control'
+        value: 'no-cache, no-store, must-revalidate'
+  # Long-cache content-hashed assets emitted by `flutter build web`.
+  - pattern: '**/*.@(js|css|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|otf|wasm)'
+    headers:
+      - key: 'Cache-Control'
+        value: 'public, max-age=31536000, immutable'

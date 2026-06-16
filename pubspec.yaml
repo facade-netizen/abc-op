@@ -1,0 +1,51 @@
+name: op_system
+description: OP System
+publish_to: 'none' 
+
+version: 0.0.1+46
+
+environment:
+  sdk: ^3.10.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+  dio:
+  get: 
+  intl:
+  http:
+  hive: 
+  chopper:
+  protobuf:
+  web: ^1.1.1
+  flutter_bloc:
+  universal_html:
+  flutter_switch:
+  signalr_netcore:
+  go_router: ^8.2.0
+  animated_snack_bar:
+  dropdown_button2: ^2.3.9
+  syncfusion_flutter_xlsio: 28.1.35
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  build_runner:
+  flutter_lints:
+  hive_generator:
+  chopper_generator:
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/htmlTemplates/
+
+#flutter build web --pwa-strategy=none  
+#protoc --dart_out=. manager_broadcast_data.proto
+#dart run build_runner build --delete-conflicting-outputs
+#or run these two commands to regenerate codegen files or read run_regenerate_codegen.md at project root
+#chmod +x tool/regenerate_codegen.py
+#./tool/regenerate_codegen.py

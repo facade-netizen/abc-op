@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>Profile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #eef2f5;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', system-ui, -apple-system, sans-serif;
+            display: flex;
+            align-items: start;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        .profile-card {
+            width: 100%;
+            max-width: 100%;
+            background: #ffffff;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+            border: 1px solid #dce3e9;
+            border-radius: 0;
+        }
+
+        .card-header {
+            background: #7d99a8;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: white;
+            border-radius: 0;
+        }
+
+        .username {
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: -0.2px;
+            line-height: 1.3;
+            color: #ffffff;
+        }
+
+        .card-body {
+            padding: 0;
+            background: #ffffff;
+            border-radius: 0;
+        }
+
+        .section-title {
+            background: #7d99a8;
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 14px;
+            padding: 11px 18px;
+            letter-spacing: -0.2px;
+            border-radius: 0;
+            margin: 0;
+        }
+
+        .limit-row {
+            display: flex;
+            align-items: start;
+            justify-content: space-between;
+            padding: 8px 8px;
+            border-bottom: 1px solid #e8edf2;
+            background: #ffffff;
+            border-radius: 0;
+        }
+
+        .limit-row:last-of-type {
+            border-bottom: none;
+        }
+
+        .label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #1e293b;
+            letter-spacing: -0.2px;
+        }
+
+        .value {
+            font-weight: 700;
+            font-size: 14px;
+            color: #000000;
+            text-align: right;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-card">
+        <div class="card-header">
+            <span class="username">{{USER_NAME}}</span>
+        </div>
+
+        <div class="card-body">
+            <div class="section-title">Limits & Commission</div>
+
+            <div class="limit-row">
+                <span class="label">Exposure Limit</span>
+                <span class="value">{{EXPOSURE_LIMIT}}</span>
+            </div>
+
+            <div class="limit-row">
+                <span class="label">Commission</span>
+                <span class="value">{{COMMISSION_RATE}}</span>
+            </div>
+
+            <div class="limit-row">
+                <span class="label">Max Loss Limit</span>
+                <span class="value zero-value">{{MAX_LOSS_LIMIT}}</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

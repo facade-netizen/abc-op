@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<title>{{MATCH_TITLE}}</title>
+<style>
+  :root { --popup-font-size: 13px; }
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; font-size: var(--popup-font-size); }
+  html, body { height: 100%; }
+  body { background: #eff2f6; color: #1f2d3d; min-height: 100%; }
+  .layout { width: min(980px, 100%); height: 100%; border-radius: 0; overflow: hidden; box-shadow: 0 20px 54px rgba(20, 38, 65, 0.12); background: #ffffff; border: 1px solid #d6dde3; margin: auto; }
+  .header { height: 52px; background: #1b2e3c; color: #fff; display: flex; align-items: center; justify-content: space-between; }
+  .header-left { display: flex; align-items: center; gap: 10px; padding-left: 18px; }
+  .header h2 { font-size: 17px; font-weight: 700; line-height: 1; letter-spacing: -0.02em; }
+  .badge { background: #f4f7fb; color: #1b2e3c; border-radius: 999px; padding: 4px 12px; font-weight: 700; font-size: 12px; }
+  .close-btn { height: 100%; min-width: 96px; border: none; border-left: 1px solid rgba(255,255,255,0.15); background: transparent; color: #fff; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-size: 14px; font-weight: 600; }
+  .close-btn:hover { background: rgba(255,255,255,0.06); }
+  .content { display: flex; flex-direction: column; height: calc(100% - 52px); }
+  .section-title { padding: 18px 20px 10px; font-size: 14px; font-weight: 700; color: #1f2d3d; }
+  .table-wrap { width: 100%; padding: 0 20px 20px; flex: 1; overflow: auto; }
+  table { width: 100%; border-collapse: collapse; background: #fff; table-layout: fixed; }
+  thead tr { background: #e9eff4; }
+  th { padding: 12px 14px; text-align: left; font-weight: 700; font-size: 12px; color: #263238; border-bottom: 1px solid #d5dce1; }
+  td { padding: 12px 14px; font-size: 13px; color: #1b2430; border-bottom: 1px solid #eef2f6; vertical-align: middle; }
+  tr.positive td { background: #dce9f6; }
+  tr.negative td { background: #f7dcdf; }
+  tr.positive td:last-child { color: #0b4a86; font-weight: 700; }
+  tr.negative td:last-child { color: #b91c1f; font-weight: 700; }
+  tr.positive td:first-child, tr.negative td:first-child { color: #111827; }
+  th:nth-child(1), td:nth-child(1) { width: 60%; }
+  th:nth-child(2), td:nth-child(2) { width: 40%; text-align: right; }
+</style>
+</head>
+<body>
+<div class="layout">
+  <div class="header">
+    <div class="header-left">
+      <h2>{{MATCH_TITLE}}</h2>
+      <span class="badge">{{TAG}}</span>
+    </div>
+    <button class="close-btn" type="button" onclick="window.close()">
+      <span>×</span>
+      <span>Close</span>
+    </button>
+  </div>
+  <div class="content">
+    <div class="section-title">Run Position</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Run</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          {{TABLE_ROWS}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<script id="allData" type="application/json">{{SAFE_JSON}}</script>
+<script>
+  var allData = JSON.parse(document.getElementById('allData').textContent || '[]');
+  function renderRowHtml(r){
+    var amt = Number(r.amount || 0);
+    var amtText = amt >= 0 ? amt.toFixed(2) : '(' + Math.abs(amt).toFixed(2) + ')';
+    var cls = amt >= 0 ? 'positive' : 'negative';
+    var color = amt >= 0 ? '#0D47A1' : '#B71C1C';
+    return '<tr class="' + cls + '">' +
+            '<td>' + (r.runs || '') + '</td>' +
+            '<td style="text-align:right;color:' + color + ';">' + amtText + '</td>' +
+          '</tr>';
+  }
+  function renderPage(){
+    var html = '';
+    allData.forEach(function(r){ html += renderRowHtml(r); });
+    document.getElementById('tableBody').innerHTML = html;
+  }
+  renderPage();
+</script>
+</body>
+</html>
